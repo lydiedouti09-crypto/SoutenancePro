@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+{% block title %}Enseignants{% endblock %}
+{% block page_title %}Enseignants{% endblock %}
+
+{% block body %}
+<div class="d-flex justify-content-end mb-3">
+    <a href="{{ path('app_enseignant_new') }}" class="btn btn-primary"><i class="ti ti-plus"></i> Ajouter</a>
+</div>
+<div class="card">
+    <div class="card-body p-0">
+        <table class="table table-hover mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Photo</th><th>Nom</th><th>Prénom</th><th>Email</th><th>Spécialité</th><th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for e in enseignants %}
+                <tr>
+                    <td>
+                        {% if e.photo %}
+                            <img src="{{ asset('uploads/photos/' ~ e.photo) }}" style="width:40px;height:40px;border-radius:50%;object-fit:cover">
+                        {% else %}
+                            <div style="width:40px;height:40px;border-radius:50%;background:#E6F1FB;display:flex;align-items:center;justify-content:center;font-weight:600;color:#185FA5;font-size:14px">
+                                {{ e.nom|first|upper }}
+                            </div>
+                        {% endif %}
+                    </td>
+                    <td>{{ e.nom }}</td>
+                    <td>{{ e.prenom }}</td>
+                    <td>{{ e.email }}</td>
+                    <td>{{ e.specialite }}</td>
+                    <td>
+                        <a href="{{ path('app_enseignant_edit', {id: e.id}) }}" class="btn btn-sm btn-outline-primary"><i class="ti ti-edit"></i></a>
+                        <form method="post" action="{{ path('app_enseignant_delete', {id: e.id}) }}" class="d-inline" onsubmit="return confirm('Supprimer ?')">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete'~e.id) }}">
+                            <button class="btn btn-sm btn-outline-danger"><i class="ti ti-trash"></i></button>
+                        </form>
+                    </td>
+                </tr>
+                {% else %}
+                <tr><td colspan="6" class="text-center text-muted py-3">Aucun enseignant</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

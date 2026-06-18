@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+{% block title %}Étudiants{% endblock %}
+{% block page_title %}Étudiants{% endblock %}
+
+{% block body %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <form class="d-flex gap-2" method="get">
+        <input type="text" name="search" class="form-control" placeholder="Rechercher par nom..." value="{{ search }}">
+        <button class="btn btn-outline-secondary">Rechercher</button>
+    </form>
+    <a href="{{ path('app_etudiant_new') }}" class="btn btn-primary"><i class="ti ti-plus"></i> Ajouter</a>
+</div>
+
+<div class="card">
+    <div class="card-body p-0">
+        <table class="table table-hover mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Nom</th><th>Prénom</th><th>Email</th><th>Filière</th><th>Thème</th><th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for e in etudiants %}
+                <tr>
+                    <td>{{ e.nom }}</td>
+                    <td>{{ e.prenom }}</td>
+                    <td>{{ e.email }}</td>
+                    <td>{{ e.filiere }}</td>
+                    <td>{{ e.themeMemoire }}</td>
+                    <td>
+                        <a href="{{ path('app_etudiant_edit', {id: e.id}) }}" class="btn btn-sm btn-outline-primary"><i class="ti ti-edit"></i></a>
+                        <form method="post" action="{{ path('app_etudiant_delete', {id: e.id}) }}" class="d-inline" onsubmit="return confirm('Supprimer ?')">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete'~e.id) }}">
+                            <button class="btn btn-sm btn-outline-danger"><i class="ti ti-trash"></i></button>
+                        </form>
+                    </td>
+                </tr>
+                {% else %}
+                <tr><td colspan="6" class="text-center text-muted py-3">Aucun étudiant</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

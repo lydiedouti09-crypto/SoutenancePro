@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ title }}{% endblock %}
+{% block page_title %}{{ title }}{% endblock %}
+
+{% block body %}
+<div style="max-width:580px">
+<div style="background:#fff;border-radius:14px;border:1px solid #e5e7eb;padding:32px">
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+    <div class="mb-3">
+        <label class="form-label" style="font-size:13px;font-weight:600;color:#374151">Nom</label>
+        {{ form_widget(form.nom, {'attr': {'class': 'form-control', 'placeholder': 'Ex: Kouassi', 'style': 'border-radius:8px;font-size:14px;padding:10px 14px'}}) }}
+        {{ form_errors(form.nom) }}
+    </div>
+    <div class="mb-3">
+        <label class="form-label" style="font-size:13px;font-weight:600;color:#374151">Prénom</label>
+        {{ form_widget(form.prenom, {'attr': {'class': 'form-control', 'placeholder': 'Ex: Ama', 'style': 'border-radius:8px;font-size:14px;padding:10px 14px'}}) }}
+        {{ form_errors(form.prenom) }}
+    </div>
+    <div class="mb-3">
+        <label class="form-label" style="font-size:13px;font-weight:600;color:#374151">Email</label>
+        {{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder': 'exemple@email.com', 'style': 'border-radius:8px;font-size:14px;padding:10px 14px'}}) }}
+        {{ form_errors(form.email) }}
+    </div>
+    <div class="mb-3">
+        <label class="form-label" style="font-size:13px;font-weight:600;color:#374151">Filière</label>
+        {{ form_widget(form.filiere, {'attr': {'class': 'form-control', 'placeholder': 'Ex: Génie Logiciel', 'style': 'border-radius:8px;font-size:14px;padding:10px 14px'}}) }}
+        {{ form_errors(form.filiere) }}
+    </div>
+    <div class="mb-4">
+        <label class="form-label" style="font-size:13px;font-weight:600;color:#374151">Thème du mémoire</label>
+        {{ form_widget(form.themeMemoire, {'attr': {'class': 'form-control', 'placeholder': 'Ex: Application mobile de gestion...', 'rows': 3, 'style': 'border-radius:8px;font-size:14px;padding:10px 14px'}}) }}
+        {{ form_errors(form.themeMemoire) }}
+    </div>
+
+    <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-primary px-4" style="border-radius:8px;font-size:14px">
+            <i class="ti ti-device-floppy"></i> Enregistrer
+        </button>
+        <a href="{{ path('app_etudiant_index') }}" class="btn btn-outline-secondary px-4" style="border-radius:8px;font-size:14px">
+            <i class="ti ti-x"></i> Annuler
+        </a>
+    </div>
+    {{ form_end(form) }}
+</div>
+</div>
+{% endblock %}

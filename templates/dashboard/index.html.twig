@@ -1,0 +1,117 @@
+{% extends 'base.html.twig' %}
+{% block title %}Tableau de bord{% endblock %}
+{% block page_title %}Tableau de bord{% endblock %}
+
+{% block body %}
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div style="background:linear-gradient(135deg,#185FA5,#2E86DE);border-radius:12px;padding:16px 18px;color:#fff">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <span style="font-size:11px;font-weight:600;letter-spacing:.08em;opacity:.8;text-transform:uppercase">Étudiants</span>
+                <div style="background:rgba(255,255,255,.2);border-radius:7px;padding:5px 6px"><i class="ti ti-users" style="font-size:16px"></i></div>
+            </div>
+            <div style="font-size:30px;font-weight:700;line-height:1">{{ nbEtudiants }}</div>
+            <div style="font-size:11px;opacity:.75;margin-top:3px">inscrits au système</div>
+            <hr style="border-color:rgba(255,255,255,.2);margin:10px 0">
+            <a href="{{ path('app_etudiant_index') }}" style="font-size:11px;color:#fff;text-decoration:none;opacity:.9">Voir la liste <i class="ti ti-arrow-right" style="font-size:11px"></i></a>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div style="background:linear-gradient(135deg,#0F6E56,#1AA87E);border-radius:12px;padding:16px 18px;color:#fff">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <span style="font-size:11px;font-weight:600;letter-spacing:.08em;opacity:.8;text-transform:uppercase">Enseignants</span>
+                <div style="background:rgba(255,255,255,.2);border-radius:7px;padding:5px 6px"><i class="ti ti-chalkboard" style="font-size:16px"></i></div>
+            </div>
+            <div style="font-size:30px;font-weight:700;line-height:1">{{ nbEnseignants }}</div>
+            <div style="font-size:11px;opacity:.75;margin-top:3px">corps enseignant</div>
+            <hr style="border-color:rgba(255,255,255,.2);margin:10px 0">
+            <a href="{{ path('app_enseignant_index') }}" style="font-size:11px;color:#fff;text-decoration:none;opacity:.9">Voir la liste <i class="ti ti-arrow-right" style="font-size:11px"></i></a>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div style="background:linear-gradient(135deg,#C47A1E,#F0A500);border-radius:12px;padding:16px 18px;color:#fff">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <span style="font-size:11px;font-weight:600;letter-spacing:.08em;opacity:.8;text-transform:uppercase">Salles</span>
+                <div style="background:rgba(255,255,255,.2);border-radius:7px;padding:5px 6px"><i class="ti ti-door" style="font-size:16px"></i></div>
+            </div>
+            <div style="font-size:30px;font-weight:700;line-height:1">{{ nbSalles }}</div>
+            <div style="font-size:11px;opacity:.75;margin-top:3px">disponibles pour les jurys</div>
+            <hr style="border-color:rgba(255,255,255,.2);margin:10px 0">
+            <a href="{{ path('app_salle_index') }}" style="font-size:11px;color:#fff;text-decoration:none;opacity:.9">Voir la liste <i class="ti ti-arrow-right" style="font-size:11px"></i></a>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div style="background:linear-gradient(135deg,#534AB7,#7C6FCD);border-radius:12px;padding:16px 18px;color:#fff">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <span style="font-size:11px;font-weight:600;letter-spacing:.08em;opacity:.8;text-transform:uppercase">Soutenances</span>
+                <div style="background:rgba(255,255,255,.2);border-radius:7px;padding:5px 6px"><i class="ti ti-calendar-event" style="font-size:16px"></i></div>
+            </div>
+            <div style="font-size:30px;font-weight:700;line-height:1">{{ nbSoutenances }}</div>
+            <div style="font-size:11px;opacity:.75;margin-top:3px">programmées au total</div>
+            <hr style="border-color:rgba(255,255,255,.2);margin:10px 0">
+            <a href="{{ path('app_soutenance_index') }}" style="font-size:11px;color:#fff;text-decoration:none;opacity:.9">Voir la liste <i class="ti ti-arrow-right" style="font-size:11px"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-md-8">
+        <div style="background:#fff;border-radius:14px;border:1px solid #e5e7eb;padding:24px">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <div style="font-size:15px;font-weight:600;color:#111">Soutenances récentes</div>
+                    <div style="font-size:12px;color:#6b7280">Dernières programmations enregistrées</div>
+                </div>
+                <a href="{{ path('app_soutenance_new') }}" class="btn btn-primary btn-sm">
+                    <i class="ti ti-plus"></i> Programmer
+                </a>
+            </div>
+            <table class="table table-hover mb-0" style="font-size:13px">
+                <thead>
+                    <tr style="border-bottom:2px solid #f0f0f0">
+                        <th style="font-size:11px;color:#6b7280;font-weight:600;text-transform:uppercase;letter-spacing:.05em;border:none">Étudiant</th>
+                        <th style="font-size:11px;color:#6b7280;font-weight:600;text-transform:uppercase;letter-spacing:.05em;border:none">Date</th>
+                        <th style="font-size:11px;color:#6b7280;font-weight:600;text-transform:uppercase;letter-spacing:.05em;border:none">Heure</th>
+                        <th style="font-size:11px;color:#6b7280;font-weight:600;text-transform:uppercase;letter-spacing:.05em;border:none">Salle</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="4" class="text-center py-4" style="color:#9ca3af;font-size:13px">
+                            <i class="ti ti-calendar-off" style="font-size:28px;display:block;margin-bottom:6px"></i>
+                            <a href="{{ path('app_soutenance_index') }}" style="color:#534AB7">Voir toutes les soutenances</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div style="background:#fff;border-radius:14px;border:1px solid #e5e7eb;padding:24px">
+            <div style="font-size:15px;font-weight:600;color:#111;margin-bottom:4px">Actions rapides</div>
+            <div style="font-size:12px;color:#6b7280;margin-bottom:16px">Accès direct aux fonctions clés</div>
+            <div class="d-grid gap-2">
+                <a href="{{ path('app_etudiant_new') }}" style="display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;border:1px solid #B5D4F4;text-decoration:none;color:#185FA5;font-size:13px;background:#E6F1FB">
+                    <div style="background:#185FA5;border-radius:7px;padding:6px"><i class="ti ti-user-plus" style="font-size:16px;color:#fff"></i></div>
+                    Ajouter un étudiant
+                </a>
+                <a href="{{ path('app_enseignant_new') }}" style="display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;border:1px solid #A7DFC8;text-decoration:none;color:#0F6E56;font-size:13px;background:#E1F5EE">
+                    <div style="background:#0F6E56;border-radius:7px;padding:6px"><i class="ti ti-user-check" style="font-size:16px;color:#fff"></i></div>
+                    Ajouter un enseignant
+                </a>
+                <a href="{{ path('app_salle_new') }}" style="display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;border:1px solid #F5D98A;text-decoration:none;color:#C47A1E;font-size:13px;background:#FEF9E7">
+                    <div style="background:#C47A1E;border-radius:7px;padding:6px"><i class="ti ti-building" style="font-size:16px;color:#fff"></i></div>
+                    Ajouter une salle
+                </a>
+                <a href="{{ path('app_soutenance_new') }}" style="display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;border:1px solid #C4BFF0;text-decoration:none;color:#534AB7;font-size:13px;background:#EEEDFE">
+                    <div style="background:#534AB7;border-radius:7px;padding:6px"><i class="ti ti-calendar-plus" style="font-size:16px;color:#fff"></i></div>
+                    Programmer une soutenance
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

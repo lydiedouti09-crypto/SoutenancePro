@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+{% block title %}Mes soutenances{% endblock %}
+{% block page_title %}Mes soutenances{% endblock %}
+
+{% block body %}
+<div class="card">
+    <div class="card-body p-0">
+        <table class="table table-hover mb-0">
+            <thead class="table-light">
+                <tr><th>Étudiant</th><th>Date</th><th>Heure</th><th>Salle</th><th>Rôle</th></tr>
+            </thead>
+            <tbody>
+                {% for s in soutenances %}
+                <tr>
+                    <td>{{ s.etudiant.nom }} {{ s.etudiant.prenom }}</td>
+                    <td>{{ s.date|date('d/m/Y') }}</td>
+                    <td>{{ s.heure|date('H:i') }}</td>
+                    <td>{{ s.salle.code }}</td>
+                    <td>
+                        {% if s.president == enseignant %}<span class="badge bg-primary">Président</span>
+                        {% elseif s.rapporteur == enseignant %}<span class="badge bg-success">Rapporteur</span>
+                        {% else %}<span class="badge bg-secondary">Examinateur</span>{% endif %}
+                    </td>
+                </tr>
+                {% else %}
+                <tr><td colspan="5" class="text-center text-muted py-3">Aucune soutenance</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

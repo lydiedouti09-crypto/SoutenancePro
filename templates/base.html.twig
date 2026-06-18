@@ -1,24 +1,119 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
-
-        {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-        {% endblock %}
-
-        {% set frankenphpHotReload = app.request.server.get('FRANKENPHP_HOT_RELOAD') %}
-        {% if frankenphpHotReload %}
-        <meta name="frankenphp-hot-reload:url" content="{{ frankenphpHotReload }}">
-        <script src="https://cdn.jsdelivr.net/npm/idiomorph"></script>
-        <script src="https://cdn.jsdelivr.net/npm/frankenphp-hot-reload/+esm" type="module"></script>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}SoutenancePro{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    <style>
+        body { background: #f4f6f9; }
+        .sidebar {
+            width: 240px; min-height: 100vh;
+            background: #f9f9f9; border-right: 1px solid #1a2f5a;
+            position: fixed; top: 0; left: 0; padding: 0;
+        }
+        .sidebar .nav-link {
+            color: #a0aec0; padding: 10px 20px;
+            display: flex; align-items: center; gap: 10px;
+            font-size: 14px; border-radius: 0;
+        }
+        .sidebar .nav-link:hover, .sidebar .nav-link.active {
+            background: #1a2f5a; color: #F0A500;
+        }
+        .sidebar .nav-link i { font-size: 18px; }
+        .main-content { margin-left: 240px; padding: 30px; }
+        .card { border: 1px solid #e5e7eb; border-radius: 12px; }
+        .stat-card { background: #fff; border-radius: 12px; padding: 20px; border: 1px solid #e5e7eb; }
+        .stat-card .value { font-size: 28px; font-weight: 600; }
+        .stat-card .label { font-size: 13px; color: #6b7280; }
+        .topbar { background: #fff; border-bottom: 1px solid #e5e7eb; padding: 14px 30px; margin: -30px -30px 30px; display: flex; justify-content: space-between; align-items: center; }
+        .badge-role { font-size: 11px; padding: 4px 12px; border-radius: 20px; background: #E6F1FB; color: #185FA5; }
+        .btn-primary { background: #185FA5; border-color: #185FA5; }
+        .btn-primary:hover { background: #0C447C; border-color: #0C447C; }
+        .alert { border-radius: 8px; }
+        hr { border-color: #1a2f5a; }
+    </style>
+</head>
+<body>
+{% if app.user %}
+<div class="sidebar">
+    <div style="padding:16px 20px;border-bottom:1px solid #fafcff;display:flex;align-items:center;gap:10px">
+        <img src="{{ asset('images/3d-rendent-chapeau-obtention-du-diplome-certificat-diplome_107791-16842.avif') }}" style="height:45px;object-fit:contain">
+        <div>
+            <div style="font-size:14px;font-weight:700;color:#F0A500">SoutenancePro</div>
+            <div style="font-size:10px;color:#a0aec0">Gestion des soutenances</div>
+        </div>
+    </div>
+    <nav class="nav flex-column mt-2">
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('app_dashboard') }}" class="nav-link {% if app.request.attributes.get('_route') == 'app_dashboard' %}active{% endif %}">
+                <i class="ti ti-layout-dashboard"></i> Tableau de bord
+            </a>
+            <a href="{{ path('app_user_index') }}" class="nav-link {% if 'user' in app.request.attributes.get('_route') %}active{% endif %}">
+    <i class="ti ti-user-shield"></i> Utilisateurs
+</a>
+            <a href="{{ path('app_etudiant_index') }}" class="nav-link {% if 'etudiant' in app.request.attributes.get('_route') %}active{% endif %}">
+                <i class="ti ti-users"></i> Étudiants
+            </a>
+            <a href="{{ path('app_enseignant_index') }}" class="nav-link {% if 'enseignant' in app.request.attributes.get('_route') %}active{% endif %}">
+                <i class="ti ti-chalkboard"></i> Enseignants
+            </a>
+            <a href="{{ path('app_salle_index') }}" class="nav-link {% if 'salle' in app.request.attributes.get('_route') %}active{% endif %}">
+                <i class="ti ti-door"></i> Salles
+            </a>
+            <a href="{{ path('app_soutenance_index') }}" class="nav-link {% if 'soutenance' in app.request.attributes.get('_route') %}active{% endif %}">
+                <i class="ti ti-calendar-event"></i> Soutenances
+            </a>
+        {% else %}
+            <a href="{{ path('app_dashboard') }}" class="nav-link {% if app.request.attributes.get('_route') == 'app_dashboard' %}active{% endif %}">
+                <i class="ti ti-layout-dashboard"></i> Tableau de bord
+            </a>
+            <a href="{{ path('app_enseignant_soutenances') }}" class="nav-link">
+                <i class="ti ti-calendar-event"></i> Mes soutenances
+            </a>
         {% endif %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
+        <a href="{{ path('app_enseignant_etudiants') }}" class="nav-link">
+    <i class="ti ti-users"></i> Mes étudiants
+</a>
+        <hr>
+        <a href="{{ path('app_logout') }}" class="nav-link" style="color:#fc8181">
+            <i class="ti ti-logout"></i> Déconnexion
+        </a>
+    </nav>
+</div>
+{% endif %}
+
+<div class="{{ app.user ? 'main-content' : '' }}">
+    {% if app.user %}
+    <div class="topbar">
+        <div class="fw-500" style="font-size:16px">{% block page_title %}{% endblock %}</div>
+        <div class="d-flex align-items-center gap-2">
+    <span class="badge-role">{{ is_granted('ROLE_ADMIN') ? 'Administrateur' : 'Enseignant' }}</span>
+    {% set photo = current_enseignant_photo() %}
+    {% if photo %}
+        <img src="{{ asset('uploads/photos/' ~ photo) }}" style="width:34px;height:34px;border-radius:50%;object-fit:cover">
+    {% else %}
+        <div style="width:34px;height:34px;border-radius:50%;background:#E6F1FB;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#185FA5">
+            {{ app.user.email|first|upper }}
+        </div>
+    {% endif %}
+</div>
+    </div>
+    {% endif %}
+
+    {% for type, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ type == 'success' ? 'success' : 'danger' }} alert-dismissible fade show">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    {% block body %}{% endblock %}
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>

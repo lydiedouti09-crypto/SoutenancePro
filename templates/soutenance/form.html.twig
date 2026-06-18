@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ title }}{% endblock %}
+{% block page_title %}{{ title }}{% endblock %}
+
+{% block body %}
+<div style="max-width:680px">
+<div style="background:#fff;border-radius:14px;border:1px solid #e5e7eb;padding:32px">
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+    <div class="row g-3 mb-3">
+        <div class="col-12">
+            <label class="form-label" style="font-size:13px;font-weight:600;color:#374151">Étudiant</label>
+            {{ form_widget(form.etudiant, {'attr': {'class': 'form-select', 'style': 'border-radius:8px;font-size:14px;padding:10px 14px'}}) }}
+            {{ form_errors(form.etudiant) }}
+        </div>
+        <div class="col-md-4">
+            <label class="form-label" style="font-size:13px;font-weight:600;color:#374151">Président du jury</label>
+            {{ form_widget(form.president, {'attr': {'class': 'form-select', 'style': 'border-radius:8px;font-size:14px;padding:10px 14px'}}) }}
+            {{ form_errors(form.president) }}
+        </div>
+        <div class="col-md-4">
+            <label class="form-label" style="font-size:13px;font-weight:600;color:#374151">Rapporteur</label>
+            {{ form_widget(form.rapporteur, {'attr': {'class': 'form-select', 'style': 'border-radius:8px;font-size:14px;padding:10px 14px'}}) }}
+            {{ form_errors(form.rapporteur) }}
+        </div>
+        <div class="col-md-4">
+            <label class="form-label" style="font-size:13px;font-weight:600;color:#374151">Examinateur</label>
+            {{ form_widget(form.examinateur, {'attr': {'class': 'form-select', 'style': 'border-radius:8px;font-size:14px;padding:10px 14px'}}) }}
+            {{ form_errors(form.examinateur) }}
+        </div>
+        <div class="col-12">
+            <label class="form-label" style="font-size:13px;font-weight:600;color:#374151">Salle</label>
+            {{ form_widget(form.salle, {'attr': {'class': 'form-select', 'style': 'border-radius:8px;font-size:14px;padding:10px 14px'}}) }}
+            {{ form_errors(form.salle) }}
+        </div>
+        <div class="col-md-6">
+            <label class="form-label" style="font-size:13px;font-weight:600;color:#374151">Date</label>
+            {{ form_widget(form.date, {'attr': {'class': 'form-control', 'style': 'border-radius:8px;font-size:14px;padding:10px 14px'}}) }}
+            {{ form_errors(form.date) }}
+        </div>
+        <div class="col-md-6">
+            <label class="form-label" style="font-size:13px;font-weight:600;color:#374151">Heure</label>
+            {{ form_widget(form.heure, {'attr': {'class': 'form-control', 'style': 'border-radius:8px;font-size:14px;padding:10px 14px'}}) }}
+            {{ form_errors(form.heure) }}
+        </div>
+    </div>
+
+    <div class="d-flex gap-2 mt-2">
+        <button type="submit" class="btn btn-primary px-4" style="border-radius:8px;font-size:14px">
+            <i class="ti ti-device-floppy"></i> Enregistrer
+        </button>
+        <a href="{{ path('app_soutenance_index') }}" class="btn btn-outline-secondary px-4" style="border-radius:8px;font-size:14px">
+            <i class="ti ti-x"></i> Annuler
+        </a>
+    </div>
+    {{ form_end(form) }}
+</div>
+</div>
+{% endblock %}
