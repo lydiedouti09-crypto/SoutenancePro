@@ -43,6 +43,7 @@ class SoutenanceController extends AbstractController
                 $soutenance->getDate(),
                 $soutenance->getHeure()
             );
+           
             if ($conflit) {
                 $this->addFlash('danger', 'Cette salle est déjà occupée à cette heure.');
                 return $this->render('soutenance/form.html.twig', ['form' => $form, 'title' => 'Programmer une soutenance']);

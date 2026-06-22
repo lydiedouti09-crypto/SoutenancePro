@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use App\Repository\SoutenanceRepository;
 
 #[Route('/admin/salles')]
 #[IsGranted('ROLE_ADMIN')]
@@ -62,11 +63,18 @@ class SalleController extends AbstractController
     }
 
     #[Route('/{id}/delete', name: 'app_salle_delete', methods: ['POST'])]
-    public function delete(Salle $salle, EntityManagerInterface $em): Response
-    {
-        $em->remove($salle);
-        $em->flush();
-        $this->addFlash('success', 'Salle supprimée.');
+public function delete(Salle $salle, EntityManagerInterface $em, SoutenanceRepository $soutenanceRepo): Response
+{
+    $soutenance = $soutenanceRepo->findOneBy(['salle' => $salle]);
+
+    if ($soutenance) {
+        $this->addFlash('danger', 'Impossible de supprimer cette salle : elle est affectée à une soutenance programmée.');
         return $this->redirectToRoute('app_salle_index');
     }
+
+    $em->remove($salle);
+    $em->flush();
+    $this->addFlash('success', 'Salle supprimée.');
+    return $this->redirectToRoute('app_salle_index');
+}
 }

@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use App\Repository\SoutenanceRepository;
 
 #[Route('/admin/etudiants')]
 #[IsGranted('ROLE_ADMIN')]
@@ -68,11 +69,18 @@ class EtudiantController extends AbstractController
     }
 
     #[Route('/{id}/delete', name: 'app_etudiant_delete', methods: ['POST'])]
-    public function delete(Etudiant $etudiant, EntityManagerInterface $em): Response
-    {
-        $em->remove($etudiant);
-        $em->flush();
-        $this->addFlash('success', 'Étudiant supprimé.');
+public function delete(Etudiant $etudiant, EntityManagerInterface $em, SoutenanceRepository $soutenanceRepo): Response
+{
+    $soutenance = $soutenanceRepo->findOneBy(['etudiant' => $etudiant]);
+
+    if ($soutenance) {
+        $this->addFlash('danger', 'Impossible de supprimer cet étudiant : il a une soutenance programmée. Annulez d\'abord la soutenance.');
         return $this->redirectToRoute('app_etudiant_index');
     }
+
+    $em->remove($etudiant);
+    $em->flush();
+    $this->addFlash('success', 'Étudiant supprimé.');
+    return $this->redirectToRoute('app_etudiant_index');
+}
 }

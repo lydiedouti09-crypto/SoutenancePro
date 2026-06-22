@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use App\Repository\SoutenanceRepository;
 
 #[Route('/admin/enseignants')]
 #[IsGranted('ROLE_ADMIN')]
@@ -74,8 +75,15 @@ public function edit(Enseignant $enseignant, Request $request, EntityManagerInte
 }
 
 #[Route('/{id}/delete', name: 'app_enseignant_delete', methods: ['POST'])]
-public function delete(Enseignant $enseignant, EntityManagerInterface $em): Response
+public function delete(Enseignant $enseignant, EntityManagerInterface $em, SoutenanceRepository $soutenanceRepo): Response
 {
+    $soutenances = $soutenanceRepo->findByEnseignant($enseignant);
+
+    if (count($soutenances) > 0) {
+        $this->addFlash('danger', 'Impossible de supprimer cet enseignant : il est affecté à '.count($soutenances).' soutenance(s). Annulez ou réaffectez ces soutenances avant de le supprimer.');
+        return $this->redirectToRoute('app_enseignant_index');
+    }
+
     $em->remove($enseignant);
     $em->flush();
     $this->addFlash('success', 'Enseignant supprimé.');
